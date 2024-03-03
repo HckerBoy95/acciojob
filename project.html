@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Form</title>
+<style>
+  .error {
+    color: red;
+  }
+  .success {
+    color: green;
+  }
+</style>
+</head>
+<body>
+  <form id="signup-form">
+    <label for="email">Email:</label><br>
+    <input onchange="validateEmail" type="email" id="email" name="email" placeholder="Example@email.com"><br>
+    <span id="email-error" class="error"></span><br>
+    <span id="email-success" class="success"></span>
+    <label for="password">Password:</label><br>
+    <input onchange="validatePassword" type="password" id="password" name="password" placeholder="Your Password"><br>
+    <span id="password-error" class="error"></span><br>
+    <span id="password-success" class="success"></span><br>
+    
+    <button onclick="submitted" >Submit</button>
+  </form>
+
+  <script>
+    var er=0;
+    var ep=0;
+
+   
+
+    const form = document.getElementById('signup-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+    const passwordSuccess = document.getElementById('password-success');
+
+    emailInput.addEventListener('input', validateEmail);
+    passwordInput.addEventListener('input', validatePassword);
+
+    function validateEmail() {
+      const email = emailInput.value.trim();
+      if (email.length < 3 || !email.includes('@') || !email.includes('.')) {
+        emailError.textContent = 'Make sure email is more than 3 characters and has @ and a .'
+        emailError.classList.remove('success');
+        emailError.classList.add('error');
+      } else {
+        er=1;
+        emailError.textContent = '';
+        emailError.classList.remove('error');
+        emailError.classList.add('success');
+        return email;
+      }
+    }
+    function submitted(){
+    alert('successful signup!')
+   }
+    
+    function validatePassword() {
+      const password = passwordInput.value.trim();
+      if (password.length < 8) {
+        if (er==0){
+        passwordError.textContent = '';
+        passwordError.classList.remove('success');
+        passwordError.classList.add('error');
+        }
+        passwordError.textContent = 'Make sure Password is more than 8 characters.';
+        passwordSuccess.textContent = '';
+        passwordError.classList.remove('success');
+        passwordError.classList.add('error');
+      } else {
+        ep=1;
+        passwordError.textContent = '';
+        passwordError.classList.remove('error');
+        passwordError.classList.add('success');
+        
+        if(er==1){
+            passwordError.textContent='All good to go!'
+        }
+      }
+    }
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const emailValid = emailError.textContent === '';
+      const passwordValid = passwordError.textContent === '';
+      if (emailValid ) {
+        const confirmed = confirm('Are you sure you want to sign up?');
+        if (confirmed) {
+          alert('Successful signup!');
+          form.reset();
+        } else {
+          form.reset();
+          emailError.textContent = '';
+          passwordError.textContent = '';
+          passwordSuccess.textContent = '';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
