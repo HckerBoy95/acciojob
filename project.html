@@ -94,6 +94,9 @@
         if (confirmed) {
           alert('Successful signup!');
           form.reset();
+          passwordError.textContent = '';
+        passwordError.classList.remove('success');
+        passwordError.classList.add('error');
         } else {
           form.reset();
           emailError.textContent = '';
